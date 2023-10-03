@@ -1,16 +1,23 @@
-# This is a sample Python script.
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    # return {"greetings": "Hello world"}
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+@app.get("/properties", response_class=HTMLResponse)
+def load_properties(request: Request):
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    return templates.TemplateResponse("properties_list.html", {"request": request,
+                                                               "list": ["property1","property2"]})
