@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
+app1=FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -26,3 +27,7 @@ def load_properties(request: Request):
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app1.get("/Kichakuri/{stuff}")
+async def read_stuff(stuff):
+    return {"Stuff": stuff}
